@@ -1,6 +1,4 @@
 #define WIN32_LEAN_AND_MEAN
-#define UNICODE
-#define _UNICODE
 #include <windows.h>
 #include <commctrl.h>
 #include <string>
@@ -388,23 +386,14 @@ static void PopulateListView(const std::vector<FileEntry>& files) {
     }
 }
 
-static void OnBrowse(HWND hwnd) {
-    std::wstring path = OpenFolderDialog(hwnd);
-    if (path.empty()) return;
-
-    g_currentPath = path;
-    SetWindowTextW(g_hwndPathEdit, path.c_str());
-
+static void PopulateTreeAndList(const std::wstring& path) {
     TreeView_DeleteAllItems(g_hwndBrowser);
 
     std::wstring rootName = GetFolderName(path);
     TreeItemData* pRootData = new TreeItemData{ path };
     bool hasChildren = HasSubFolders(path);
     HTREEITEM hItem = AddTreeItem(TVI_ROOT, rootName, pRootData, hasChildren);
-    if (!hItem) {
-        delete pRootData;
-        return;
-    }
+    if (!hItem) return;
     g_suppressSelectionScan = true;
     TreeView_Expand(g_hwndBrowser, hItem, TVE_EXPAND);
     TreeView_SelectItem(g_hwndBrowser, hItem);
@@ -415,26 +404,17 @@ static void OnBrowse(HWND hwnd) {
     UpdateStatusBar(g_scanner.GetDirectCount(), g_scanner.GetTotalSize());
 }
 
+static void OnBrowse(HWND hwnd) {
+    std::wstring path = OpenFolderDialog(hwnd);
+    if (path.empty()) return;
+
+    g_currentPath = path;
+    SetWindowTextW(g_hwndPathEdit, path.c_str());
+    PopulateTreeAndList(path);
+}
+
 static void OnRefresh(HWND hwnd) {
     (void)hwnd;
     if (g_currentPath.empty()) return;
-
-    TreeView_DeleteAllItems(g_hwndBrowser);
-
-    std::wstring rootName = GetFolderName(g_currentPath);
-    TreeItemData* pRootData = new TreeItemData{ g_currentPath };
-    bool hasChildren = HasSubFolders(g_currentPath);
-    HTREEITEM hItem = AddTreeItem(TVI_ROOT, rootName, pRootData, hasChildren);
-    if (!hItem) {
-        delete pRootData;
-        return;
-    }
-    g_suppressSelectionScan = true;
-    TreeView_Expand(g_hwndBrowser, hItem, TVE_EXPAND);
-    TreeView_SelectItem(g_hwndBrowser, hItem);
-
-    auto files = g_scanner.ScanDirectory(g_currentPath);
-    FileSorter::Sort(files, SortCriteria::BySize);
-    PopulateListView(files);
-    UpdateStatusBar(g_scanner.GetDirectCount(), g_scanner.GetTotalSize());
+    PopulateTreeAndList(g_currentPath);
 }

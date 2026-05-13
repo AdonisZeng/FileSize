@@ -1,7 +1,6 @@
 #pragma once
 
 #define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
 #include <windows.h>
 #include <commctrl.h>
 #include <strsafe.h>
@@ -20,6 +19,13 @@ enum class Theme { Light, Dark };
 static constexpr int TREE_WIDTH = 260;
 static constexpr int PADDING = 16;
 static constexpr int TOOLBAR_HEIGHT = 44;
+
+// Button X offsets in toolbar (relative to PADDING)
+static constexpr int PATH_EDIT_X = 98;
+static constexpr int REFRESH_BTN_X_OFFSET = 10;
+static constexpr int OPEN_BTN_X_OFFSET = 64;
+static constexpr int THEME_BTN_X_OFFSET = 118;
+static constexpr int PATH_EDIT_WIDTH_DEDUCT = 262;
 
 extern HWND g_hwndBrowser;
 extern HWND g_hwndListView;

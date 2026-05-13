@@ -364,11 +364,11 @@ void ResizeControls(HWND hwnd) {
 
     int contentHeight = height - TOOLBAR_HEIGHT - PADDING * 2 - 28;
 
-    int editWidth = width - TREE_WIDTH - PADDING * 5 - 262;
-    SetWindowPos(g_hwndPathEdit, nullptr, PADDING + 98, PADDING + 3, std::max(editWidth, 180), 26, SWP_NOZORDER);
-    SetWindowPos(g_hwndRefreshBtn, nullptr, PADDING + 108 + editWidth, PADDING, 56, 30, SWP_NOZORDER);
-    SetWindowPos(g_hwndOpenBtn, nullptr, PADDING + 172 + editWidth, PADDING, 56, 30, SWP_NOZORDER);
-    SetWindowPos(g_hwndThemeBtn, nullptr, PADDING + 236 + editWidth, PADDING, 34, 30, SWP_NOZORDER);
+    int editWidth = width - TREE_WIDTH - PADDING * 5 - PATH_EDIT_WIDTH_DEDUCT;
+    SetWindowPos(g_hwndPathEdit, nullptr, PADDING + PATH_EDIT_X, PADDING + 3, std::max(editWidth, 180), 26, SWP_NOZORDER);
+    SetWindowPos(g_hwndRefreshBtn, nullptr, PADDING + PATH_EDIT_X + editWidth + REFRESH_BTN_X_OFFSET, PADDING, 56, 30, SWP_NOZORDER);
+    SetWindowPos(g_hwndOpenBtn, nullptr, PADDING + PATH_EDIT_X + editWidth + OPEN_BTN_X_OFFSET, PADDING, 56, 30, SWP_NOZORDER);
+    SetWindowPos(g_hwndThemeBtn, nullptr, PADDING + PATH_EDIT_X + editWidth + THEME_BTN_X_OFFSET, PADDING, 34, 30, SWP_NOZORDER);
     SetWindowPos(g_hwndBrowser, nullptr, PADDING, TOOLBAR_HEIGHT + PADDING, TREE_WIDTH, contentHeight, SWP_NOZORDER);
     SetWindowPos(g_hwndListView, nullptr, TREE_WIDTH + PADDING * 2, TOOLBAR_HEIGHT + PADDING, width - TREE_WIDTH - PADDING * 3, contentHeight, SWP_NOZORDER);
     SetWindowPos(g_hwndStatusBar, nullptr, PADDING, height - 26, width - PADDING * 2, 22, SWP_NOZORDER);

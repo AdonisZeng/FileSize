@@ -9,21 +9,23 @@ endif()
 project ("FileSize")
 
 set(SOURCES
-    main.cpp
-    UI.cpp
-    FileScanner.cpp
-    FileSorter.cpp
-    SizeFormatter.cpp
+    src/main.cpp
+    src/UI.cpp
+    src/FileScanner.cpp
+    src/FileSorter.cpp
+    src/SizeFormatter.cpp
 )
 
 set(HEADERS
-    UI.h
-    FileScanner.h
-    FileSorter.h
-    SizeFormatter.h
+    include/UI.h
+    include/FileScanner.h
+    include/FileSorter.h
+    include/SizeFormatter.h
 )
 
-add_executable (FileSize WIN32 ${SOURCES} ${HEADERS} app.manifest)
+include_directories(include)
+
+add_executable (FileSize WIN32 ${SOURCES} ${HEADERS} res/app.manifest)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET FileSize PROPERTY CXX_STANDARD 20)
